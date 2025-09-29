@@ -1,4 +1,3 @@
-/* Estilos generales */
 * {
     margin: 0;
     padding: 0;
@@ -41,7 +40,6 @@ h3 {
     color: #fff;
 }
 
-/* Navegación */
 .nav {
     display: flex;
     justify-content: center;
@@ -75,7 +73,6 @@ h3 {
     transform: translateY(-2px);
 }
 
-/* Secciones */
 .section {
     display: none;
     background: rgba(0, 0, 0, 0.7);
@@ -101,7 +98,6 @@ h3 {
     }
 }
 
-/* Tienda */
 .lootboxes {
     display: flex;
     justify-content: center;
@@ -202,7 +198,45 @@ h3 {
     box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
 }
 
-/* Inventario */
+.inventory-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.total-cards, .total-value {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.total-cards span, .total-value span {
+    color: #ffeb3b;
+}
+
+.sell-all-btn {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.sell-all-btn:hover {
+    background: linear-gradient(135deg, #c0392b, #a93226);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+}
+
 .inventory {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -218,6 +252,7 @@ h3 {
     transition: all 0.3s ease;
     border: 2px solid transparent;
     backdrop-filter: blur(5px);
+    cursor: pointer;
 }
 
 .card:hover {
@@ -284,6 +319,13 @@ h3 {
     box-shadow: 0 2px 8px rgba(243, 156, 18, 0.3);
 }
 
+.card-price {
+    margin: 8px 0;
+    font-size: 1rem;
+    color: #ffeb3b;
+    font-weight: bold;
+}
+
 .card-description {
     margin-top: 10px;
     font-size: 0.85rem;
@@ -291,7 +333,26 @@ h3 {
     line-height: 1.4;
 }
 
-/* Creador de Cartas */
+.sell-btn {
+    background: linear-gradient(135deg, #27ae60, #219653);
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-top: 8px;
+    transition: all 0.3s ease;
+    width: 100%;
+    font-weight: bold;
+}
+
+.sell-btn:hover {
+    background: linear-gradient(135deg, #219653, #1e8449);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.4);
+}
+
 .card-creator {
     max-width: 700px;
     margin: 0 auto;
@@ -379,7 +440,6 @@ h3 {
     font-size: 1.8rem;
 }
 
-/* Botón de eliminar carta */
 .delete-card-btn {
     background: linear-gradient(135deg, #e74c3c, #c0392b);
     border: none;
@@ -402,264 +462,6 @@ h3 {
     box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
 }
 
-/* Animación de apertura */
-.opening-animation {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.9);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.5s ease;
-}
-
-.opening-animation.active {
-    opacity: 1;
-    pointer-events: all;
-}
-
-.card-reveal {
-    width: 350px;
-    height: 470px;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transform: scale(0) rotate(-180deg);
-    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    overflow: hidden;
-    border: 4px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 0 50px rgba(255, 255, 255, 0.2);
-}
-
-.card-reveal.active {
-    transform: scale(1) rotate(0deg);
-}
-
-.revealed-card-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 16px;
-}
-
-/* Monedas */
-.coins {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: rgba(0, 0, 0, 0.6);
-    padding: 12px 25px;
-    border-radius: 25px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    border: 2px solid rgba(255, 215, 0, 0.3);
-    backdrop-filter: blur(5px);
-}
-
-.coins i {
-    margin-right: 10px;
-    color: gold;
-    font-size: 1.2rem;
-}
-
-#coins {
-    font-size: 1.2rem;
-    color: #ffeb3b;
-}
-
-/* Mensajes de estado */
-.inventory p, .created-cards p {
-    text-align: center;
-    color: #ccc;
-    font-size: 1.1rem;
-    padding: 40px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .container {
-        padding: 10px;
-    }
-    
-    h1 {
-        font-size: 2rem;
-        margin-top: 50px;
-    }
-    
-    h2 {
-        font-size: 1.6rem;
-    }
-    
-    .nav {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .nav-btn {
-        width: 100%;
-        max-width: 250px;
-    }
-    
-    .coins {
-        position: relative;
-        top: 0;
-        right: 0;
-        margin: 0 auto 20px;
-        width: fit-content;
-    }
-    
-    .lootboxes {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .lootbox {
-        width: 100%;
-        max-width: 300px;
-    }
-    
-    .inventory {
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        gap: 15px;
-    }
-    
-    .card-img {
-        width: 120px;
-        height: 160px;
-    }
-    
-    .section {
-        padding: 20px;
-    }
-    
-    .card-reveal {
-        width: 280px;
-        height: 380px;
-    }
-}
-
-@media (max-width: 480px) {
-    .inventory {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    }
-    
-    .card-img {
-        width: 100px;
-        height: 140px;
-    }
-    
-    .lootbox-img {
-        width: 120px;
-        height: 120px;
-        font-size: 40px;
-    }
-    
-    h1 {
-        font-size: 1.8rem;
-    }
-    
-    h2 {
-        font-size: 1.4rem;
-    }
-}
-
-/* Efectos de partículas para fondo */
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: 
-        radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255, 69, 0, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(30, 144, 255, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: -1;
-}
-
-/* Scroll personalizado */
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #3498db, #9b59b6);
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #2980b9, #8e44ad);
-}
-/* ... (mantener todos los estilos anteriores) ... */
-
-/* Header del inventario */
-.inventory-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.total-cards, .total-value {
-    font-size: 1.1rem;
-    font-weight: bold;
-}
-
-.total-cards span, .total-value span {
-    color: #ffeb3b;
-}
-
-/* Precio de las cartas */
-.card-price {
-    margin: 8px 0;
-    font-size: 1rem;
-    color: #ffeb3b;
-    font-weight: bold;
-}
-
-.sell-btn {
-    background: linear-gradient(135deg, #27ae60, #219653);
-    border: none;
-    color: white;
-    padding: 8px 16px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    margin-top: 8px;
-    transition: all 0.3s ease;
-    width: 100%;
-    font-weight: bold;
-}
-
-.sell-btn:hover {
-    background: linear-gradient(135deg, #219653, #1e8449);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.4);
-}
-
-/* Base de Datos */
 .database-controls {
     display: flex;
     gap: 15px;
@@ -701,6 +503,52 @@ body::before {
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.9);
     min-width: 180px;
+}
+
+.import-export {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+    width: 100%;
+    justify-content: center;
+}
+
+.export-btn, .import-btn, .reset-btn {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    border: none;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    flex: 1;
+    min-width: 140px;
+    text-align: center;
+}
+
+.import-btn {
+    background: linear-gradient(135deg, #27ae60, #219653);
+}
+
+.reset-btn {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
+.export-btn:hover {
+    background: linear-gradient(135deg, #2980b9, #1f618d);
+    transform: translateY(-2px);
+}
+
+.import-btn:hover {
+    background: linear-gradient(135deg, #219653, #1e8449);
+    transform: translateY(-2px);
+}
+
+.reset-btn:hover {
+    background: linear-gradient(135deg, #c0392b, #a93226);
+    transform: translateY(-2px);
 }
 
 .database-stats {
@@ -776,7 +624,6 @@ body::before {
     transform: translateY(-2px);
 }
 
-/* Modal */
 .modal {
     display: none;
     position: fixed;
@@ -861,7 +708,6 @@ body::before {
     transform: translateY(-2px);
 }
 
-/* Precios base por rareza */
 .price-badge {
     position: absolute;
     top: 10px;
@@ -875,8 +721,271 @@ body::before {
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-/* Responsive */
+.opening-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.opening-animation.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.card-reveal {
+    width: 350px;
+    height: 470px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0) rotate(-180deg);
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.2);
+}
+
+.card-reveal.active {
+    transform: scale(1) rotate(0deg);
+}
+
+.revealed-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+}
+
+.quick-sell-options {
+    display: flex;
+    gap: 20px;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.5s ease 0.5s;
+}
+
+.opening-animation.active .quick-sell-options {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.quick-sell-btn, .quick-keep-btn {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    min-width: 150px;
+}
+
+.quick-sell-btn {
+    background: linear-gradient(135deg, #27ae60, #219653);
+    color: white;
+}
+
+.quick-sell-btn:hover {
+    background: linear-gradient(135deg, #219653, #1e8449);
+    transform: translateY(-2px);
+}
+
+.quick-keep-btn {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+}
+
+.quick-keep-btn:hover {
+    background: linear-gradient(135deg, #2980b9, #1f618d);
+    transform: translateY(-2px);
+}
+
+.image-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 3000;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-modal.active {
+    display: flex;
+}
+
+.image-modal-content {
+    background: rgba(0, 0, 0, 0.9);
+    padding: 30px;
+    border-radius: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    max-width: 90%;
+    max-height: 90%;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.7);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+    background: rgba(231, 76, 60, 0.8);
+    transform: scale(1.1);
+}
+
+#expanded-image {
+    max-width: 400px;
+    max-height: 500px;
+    border-radius: 12px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.image-modal-info {
+    flex: 1;
+    min-width: 250px;
+}
+
+.image-modal-info h3 {
+    color: #ffeb3b;
+    margin-bottom: 15px;
+    font-size: 1.8rem;
+}
+
+.image-modal-info > div {
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+}
+
+.coins {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    backdrop-filter: blur(5px);
+}
+
+.coins i {
+    margin-right: 10px;
+    color: gold;
+    font-size: 1.2rem;
+}
+
+#coins {
+    font-size: 1.2rem;
+    color: #ffeb3b;
+}
+
+.inventory p, .created-cards p {
+    text-align: center;
+    color: #ccc;
+    font-size: 1.1rem;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 @media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    h1 {
+        font-size: 2rem;
+        margin-top: 50px;
+    }
+    
+    h2 {
+        font-size: 1.6rem;
+    }
+    
+    .nav {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .nav-btn {
+        width: 100%;
+        max-width: 250px;
+    }
+    
+    .coins {
+        position: relative;
+        top: 0;
+        right: 0;
+        margin: 0 auto 20px;
+        width: fit-content;
+    }
+    
+    .lootboxes {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .lootbox {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .inventory {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 15px;
+    }
+    
+    .card-img {
+        width: 120px;
+        height: 160px;
+    }
+    
+    .section {
+        padding: 20px;
+    }
+    
+    .card-reveal {
+        width: 280px;
+        height: 380px;
+    }
+    
     .inventory-header {
         flex-direction: column;
         gap: 10px;
@@ -899,79 +1008,94 @@ body::before {
     .modal-actions {
         flex-direction: column;
     }
+    
+    .import-export {
+        flex-direction: column;
+    }
+    
+    .export-btn, .import-btn, .reset-btn {
+        min-width: 100%;
+    }
+    
+    .image-modal-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    #expanded-image {
+        max-width: 300px;
+        max-height: 400px;
+    }
 }
 
-/* Efectos de notificación */
-.notification {
+@media (max-width: 480px) {
+    .inventory {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
+    
+    .card-img {
+        width: 100px;
+        height: 140px;
+    }
+    
+    .lootbox-img {
+        width: 120px;
+        height: 120px;
+        font-size: 40px;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    h2 {
+        font-size: 1.4rem;
+    }
+    
+    .card-reveal {
+        width: 250px;
+        height: 350px;
+    }
+    
+    .quick-sell-options {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+body::before {
+    content: '';
     position: fixed;
-    top: 20px;
-    right: 20px;
-    background: linear-gradient(135deg, #27ae60, #219653);
-    color: white;
-    padding: 15px 25px;
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    z-index: 3000;
-    transform: translateX(400px);
-    transition: transform 0.3s ease;
-}
-
-.notification.show {
-    transform: translateX(0);
-}
-
-.notification.error {
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
-}
-
-/* Import/Export Controls */
-.import-export {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-top: 15px;
+    top: 0;
+    left: 0;
     width: 100%;
-    justify-content: center;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 69, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(30, 144, 255, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
 }
 
-.export-btn, .import-btn, .reset-btn {
-    background: linear-gradient(135deg, #3498db, #2980b9);
-    border: none;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    flex: 1;
-    min-width: 140px;
-    text-align: center;
+::-webkit-scrollbar {
+    width: 8px;
 }
 
-.import-btn {
-    background: linear-gradient(135deg, #27ae60, #219653);
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
 }
 
-.reset-btn {
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #3498db, #9b59b6);
+    border-radius: 4px;
 }
 
-.export-btn:hover {
-    background: linear-gradient(135deg, #2980b9, #1f618d);
-    transform: translateY(-2px);
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #2980b9, #8e44ad);
 }
 
-.import-btn:hover {
-    background: linear-gradient(135deg, #219653, #1e8449);
-    transform: translateY(-2px);
-}
-
-.reset-btn:hover {
-    background: linear-gradient(135deg, #c0392b, #a93226);
-    transform: translateY(-2px);
-}
-
-/* Modal de importación */
 .import-modal .modal-content {
     max-width: 500px;
 }
@@ -1050,17 +1174,24 @@ body::before {
     color: #ccc;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .import-export {
-        flex-direction: column;
-    }
-    
-    .export-btn, .import-btn, .reset-btn {
-        min-width: 100%;
-    }
-    
-    .import-stats {
-        grid-template-columns: 1fr;
-    }
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #27ae60, #219653);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 3000;
+    transform: translateX(400px);
+    transition: transform 0.3s ease;
+}
+
+.notification.show {
+    transform: translateX(0);
+}
+
+.notification.error {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
 }
