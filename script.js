@@ -303,9 +303,32 @@ function getRandomCard(rarity) {
     }));
 }
 
+function getDuplicateCardInfo(newCard) {
+    let total = 0;
+    const types = new Set();
+    
+    inventory.forEach(card => {
+        // Cartas con mismo nombre y rareza
+        if (card.name === newCard.name && card.rarity === newCard.rarity) {
+            total++;
+            if (card.type) {
+                types.add(card.type);
+            }
+        }
+    });
+    
+    return {
+        total: total,
+        variants: types.size > 0 ? types.size : 1
+    };
+}
+
 function showOpeningAnimation(card, rarity) {
     cardReveal.className = 'card-reveal';
     cardReveal.classList.add(rarity);
+    
+    // Obtener información de duplicados
+    const duplicateInfo = getDuplicateCardInfo(card);
     
     const img = document.createElement('img');
     img.src = card.image;
@@ -315,14 +338,50 @@ function showOpeningAnimation(card, rarity) {
         this.src = 'https://via.placeholder.com/300x400/333/fff?text=Imagen+no+disponible';
     };
     
-    cardReveal.innerHTML = '';
-    cardReveal.appendChild(img);
+    // Crear badge de cantidad con más información
+    let countBadge = '';
+    if (duplicateInfo.total > 0) {
+        if (duplicateInfo.variants > 1) {
+            countBadge = `
+                <div class="opening-duplicate-count multiple-variants">
+                    <div class="duplicate-main">Ya tienes ${duplicateInfo.total}</div>
+                    <div class="duplicate-sub">en ${duplicateInfo.variants} tipos</div>
+                </div>
+            `;
+        } else {
+            countBadge = `
+                <div class="opening-duplicate-count">
+                    Ya tienes ${duplicateInfo.total}
+                </div>
+            `;
+        }
+    }
+    
+    cardReveal.innerHTML = `
+        ${countBadge}
+        <img src="${card.image}" alt="${card.name}" class="revealed-card-image" onerror="this.src='https://via.placeholder.com/300x400/333/fff?text=Imagen+no+disponible'">
+    `;
     
     openingAnimation.classList.add('active');
     
     setTimeout(() => {
         cardReveal.classList.add('active');
     }, 300);
+}
+
+function countDuplicateCards(newCard) {
+    let count = 0;
+    
+    inventory.forEach(card => {
+        // Considerar cartas iguales si tienen mismo nombre, rareza y tipo
+        if (card.name === newCard.name && 
+            card.rarity === newCard.rarity && 
+            card.type === newCard.type) {
+            count++;
+        }
+    });
+    
+    return count;
 }
 
 quickSellBtn.addEventListener('click', () => {
