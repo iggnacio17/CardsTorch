@@ -21,7 +21,6 @@
             <button class="nav-btn" data-section="database">Base de Datos</button>
         </div>
         
-        <!-- Sección Tienda -->
         <div id="shop" class="section active">
             <h2>Selecciona una LootBox</h2>
             <div class="lootboxes">
@@ -51,19 +50,17 @@
             </div>
         </div>
         
-        <!-- Sección Inventario -->
         <div id="inventory" class="section">
             <h2>Tu Inventario de Cartas</h2>
             <div class="inventory-header">
                 <div class="total-cards">Total de cartas: <span id="total-cards">0</span></div>
                 <div class="total-value">Valor total: <span id="total-value">0</span> monedas</div>
+                <button class="sell-all-btn" id="sell-all-normal">Vender Todas las Normales</button>
             </div>
             <div class="inventory" id="cards-container">
-                <!-- Las cartas se mostrarán aquí -->
             </div>
         </div>
         
-        <!-- Sección Creador de Cartas -->
         <div id="creator" class="section">
             <h2>Creador de Cartas</h2>
             <div class="card-creator">
@@ -102,25 +99,14 @@
                 <div class="created-cards">
                     <h3>Tus Cartas Creadas</h3>
                     <div id="custom-cards-container" class="inventory">
-                        <!-- Cartas personalizadas se mostrarán aquí -->
                     </div>
                 </div>
             </div>
         </div>
         
-        <!-- Sección Base de Datos -->
-
-        
         <div id="database" class="section">
             <h2>Base de Datos de Cartas</h2>
             <div class="database-controls">
-
-                <div class="import-export">
-                    <button class="export-btn" id="export-btn">📤 Exportar BD</button>
-                    <button class="import-btn" id="import-btn">📥 Importar BD</button>
-                    <input type="file" id="import-file" accept=".json" style="display: none;">
-                    <button class="reset-btn" id="reset-btn">🔄 Resetear BD</button>
-                </div>
                 <div class="search-bar">
                     <input type="text" id="search-cards" placeholder="Buscar cartas...">
                     <button id="search-btn">🔍</button>
@@ -132,6 +118,12 @@
                         <option value="premium">Premium</option>
                         <option value="legendary">Legendaria</option>
                     </select>
+                </div>
+                <div class="import-export">
+                    <button class="export-btn" id="export-btn">📤 Exportar BD</button>
+                    <button class="import-btn" id="import-btn">📥 Importar BD</button>
+                    <input type="file" id="import-file" accept=".json" style="display: none;">
+                    <button class="reset-btn" id="reset-btn">🔄 Resetear BD</button>
                 </div>
             </div>
             <div class="database-stats">
@@ -149,16 +141,17 @@
                 </div>
             </div>
             <div class="database-cards" id="database-container">
-                <!-- Todas las cartas de la base de datos se mostrarán aquí -->
             </div>
         </div>
         
-        <!-- Animación de apertura -->
         <div class="opening-animation" id="opening-animation">
             <div class="card-reveal" id="card-reveal"></div>
+            <div class="quick-sell-options" id="quick-sell-options">
+                <button class="quick-sell-btn" id="quick-sell-btn">Vender Carta</button>
+                <button class="quick-keep-btn" id="quick-keep-btn">Guardar Carta</button>
+            </div>
         </div>
         
-        <!-- Modal de confirmación de venta -->
         <div class="modal" id="sell-modal">
             <div class="modal-content">
                 <h3>Vender Carta</h3>
@@ -167,6 +160,19 @@
                 <div class="modal-actions">
                     <button class="modal-btn confirm" id="confirm-sell">Vender por <span id="sell-price">0</span> monedas</button>
                     <button class="modal-btn cancel" id="cancel-sell">Cancelar</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="image-modal" id="image-modal">
+            <div class="image-modal-content">
+                <span class="close-btn" id="close-image-modal">&times;</span>
+                <img id="expanded-image" src="" alt="Carta expandida">
+                <div class="image-modal-info">
+                    <h3 id="expanded-card-name"></h3>
+                    <div id="expanded-card-rarity"></div>
+                    <div id="expanded-card-price"></div>
+                    <div id="expanded-card-description"></div>
                 </div>
             </div>
         </div>
