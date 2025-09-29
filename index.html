@@ -55,7 +55,13 @@
             <div class="inventory-header">
                 <div class="total-cards">Total de cartas: <span id="total-cards">0</span></div>
                 <div class="total-value">Valor total: <span id="total-value">0</span> monedas</div>
-                <button class="sell-all-btn" id="sell-all-normal">Vender Todas las Normales</button>
+                <div class="inventory-controls">
+                    <button class="sell-all-btn" id="sell-all-normal">Vender Todas las Normales</button>
+                    <button class="sell-all-btn" id="sell-all-duplicates">Vender Cartas Repetidas</button>
+                    <select id="type-filter">
+                        <option value="all">Todos los tipos</option>
+                    </select>
+                </div>
             </div>
             <div class="inventory" id="cards-container">
             </div>
@@ -79,6 +85,12 @@
                 </div>
                 
                 <div class="form-group">
+                    <label for="card-type">Tipo/Colección:</label>
+                    <input type="text" id="card-type" placeholder="Ej: Criaturas Míticas" list="type-suggestions">
+                    <datalist id="type-suggestions"></datalist>
+                </div>
+                
+                <div class="form-group">
                     <label for="card-price">Precio de venta:</label>
                     <input type="number" id="card-price" placeholder="Ej: 50" min="1" value="50">
                 </div>
@@ -87,11 +99,6 @@
                     <label for="card-image">URL de la imagen:</label>
                     <input type="text" id="card-image" placeholder="Ej: https://ejemplo.com/imagen.jpg">
                     <small>Puedes usar enlaces de imágenes online</small>
-                </div>
-                
-                <div class="form-group">
-                    <label for="card-description">Descripción (opcional):</label>
-                    <textarea id="card-description" placeholder="Descripción de la carta..."></textarea>
                 </div>
                 
                 <button id="create-card-btn" class="create-btn">Crear Carta</button>
@@ -117,6 +124,9 @@
                         <option value="normal">Normal</option>
                         <option value="premium">Premium</option>
                         <option value="legendary">Legendaria</option>
+                    </select>
+                    <select id="type-filter-db">
+                        <option value="all">Todos los tipos</option>
                     </select>
                 </div>
                 <div class="import-export">
@@ -164,6 +174,55 @@
             </div>
         </div>
         
+        <div class="modal" id="edit-modal">
+            <div class="modal-content">
+                <h3>Editar Carta</h3>
+                <div class="form-group">
+                    <label for="edit-name">Nombre:</label>
+                    <input type="text" id="edit-name">
+                </div>
+                <div class="form-group">
+                    <label for="edit-rarity">Rareza:</label>
+                    <select id="edit-rarity">
+                        <option value="normal">Normal</option>
+                        <option value="premium">Premium</option>
+                        <option value="legendary">Legendaria</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="edit-type">Tipo/Colección:</label>
+                    <input type="text" id="edit-type" list="edit-type-suggestions">
+                    <datalist id="edit-type-suggestions"></datalist>
+                </div>
+                <div class="form-group">
+                    <label for="edit-price">Precio:</label>
+                    <input type="number" id="edit-price" min="1">
+                </div>
+                <div class="form-group">
+                    <label for="edit-image">URL de la imagen:</label>
+                    <input type="text" id="edit-image">
+                </div>
+                <div class="modal-actions">
+                    <button class="modal-btn confirm" id="confirm-edit">Guardar Cambios</button>
+                    <button class="modal-btn cancel" id="cancel-edit">Cancelar</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal" id="sell-duplicates-modal">
+            <div class="modal-content">
+                <h3>Vender Cartas Repetidas</h3>
+                <div id="duplicates-list"></div>
+                <div class="duplicates-total">
+                    Total a recibir: <span id="duplicates-total">0</span> monedas
+                </div>
+                <div class="modal-actions">
+                    <button class="modal-btn confirm" id="confirm-sell-duplicates">Vender Cartas Seleccionadas</button>
+                    <button class="modal-btn cancel" id="cancel-sell-duplicates">Cancelar</button>
+                </div>
+            </div>
+        </div>
+        
         <div class="image-modal" id="image-modal">
             <div class="image-modal-content">
                 <span class="close-btn" id="close-image-modal">&times;</span>
@@ -171,8 +230,8 @@
                 <div class="image-modal-info">
                     <h3 id="expanded-card-name"></h3>
                     <div id="expanded-card-rarity"></div>
+                    <div id="expanded-card-type"></div>
                     <div id="expanded-card-price"></div>
-                    <div id="expanded-card-description"></div>
                 </div>
             </div>
         </div>
