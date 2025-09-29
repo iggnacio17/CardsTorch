@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de LootBoxes</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Juego de LootBoxes de Cartas</h1>
+        
+        <div class="coins">
+            <i>💰</i> <span id="coins">1000</span>
+        </div>
+        
+        <div class="nav">
+            <button class="nav-btn active" data-section="shop">Tienda</button>
+            <button class="nav-btn" data-section="inventory">Inventario</button>
+            <button class="nav-btn" data-section="creator">Creador de Cartas</button>
+            <button class="nav-btn" data-section="database">Base de Datos</button>
+        </div>
+        
+        <!-- Sección Tienda -->
+        <div id="shop" class="section active">
+            <h2>Selecciona una LootBox</h2>
+            <div class="lootboxes">
+                <div class="lootbox" data-type="normal">
+                    <div class="lootbox-img normal">📦</div>
+                    <h3>LootBox Normal</h3>
+                    <p>Contiene cartas comunes</p>
+                    <div class="price">0 monedas</div>
+                    <button class="open-btn" data-type="normal">Abrir</button>
+                </div>
+                
+                <div class="lootbox" data-type="premium">
+                    <div class="lootbox-img premium">💎</div>
+                    <h3>LootBox Premium</h3>
+                    <p>Contiene cartas raras</p>
+                    <div class="price">500 monedas</div>
+                    <button class="open-btn" data-type="premium">Abrir</button>
+                </div>
+                
+                <div class="lootbox" data-type="legendary">
+                    <div class="lootbox-img legendary">🔥</div>
+                    <h3>LootBox Legendaria</h3>
+                    <p>Contiene cartas épicas</p>
+                    <div class="price">1500 monedas</div>
+                    <button class="open-btn" data-type="legendary">Abrir</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sección Inventario -->
+        <div id="inventory" class="section">
+            <h2>Tu Inventario de Cartas</h2>
+            <div class="inventory-header">
+                <div class="total-cards">Total de cartas: <span id="total-cards">0</span></div>
+                <div class="total-value">Valor total: <span id="total-value">0</span> monedas</div>
+            </div>
+            <div class="inventory" id="cards-container">
+                <!-- Las cartas se mostrarán aquí -->
+            </div>
+        </div>
+        
+        <!-- Sección Creador de Cartas -->
+        <div id="creator" class="section">
+            <h2>Creador de Cartas</h2>
+            <div class="card-creator">
+                <div class="form-group">
+                    <label for="card-name">Nombre de la carta:</label>
+                    <input type="text" id="card-name" placeholder="Ej: Dragón de Fuego">
+                </div>
+                
+                <div class="form-group">
+                    <label for="card-rarity">Rareza:</label>
+                    <select id="card-rarity">
+                        <option value="normal">Normal</option>
+                        <option value="premium">Premium</option>
+                        <option value="legendary">Legendaria</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="card-price">Precio de venta:</label>
+                    <input type="number" id="card-price" placeholder="Ej: 50" min="1" value="50">
+                </div>
+                
+                <div class="form-group">
+                    <label for="card-image">URL de la imagen:</label>
+                    <input type="text" id="card-image" placeholder="Ej: https://ejemplo.com/imagen.jpg">
+                    <small>Puedes usar enlaces de imágenes online</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="card-description">Descripción (opcional):</label>
+                    <textarea id="card-description" placeholder="Descripción de la carta..."></textarea>
+                </div>
+                
+                <button id="create-card-btn" class="create-btn">Crear Carta</button>
+                
+                <div class="created-cards">
+                    <h3>Tus Cartas Creadas</h3>
+                    <div id="custom-cards-container" class="inventory">
+                        <!-- Cartas personalizadas se mostrarán aquí -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sección Base de Datos -->
+
+        
+        <div id="database" class="section">
+            <h2>Base de Datos de Cartas</h2>
+            <div class="database-controls">
+
+                <div class="import-export">
+                    <button class="export-btn" id="export-btn">📤 Exportar BD</button>
+                    <button class="import-btn" id="import-btn">📥 Importar BD</button>
+                    <input type="file" id="import-file" accept=".json" style="display: none;">
+                    <button class="reset-btn" id="reset-btn">🔄 Resetear BD</button>
+                </div>
+                <div class="search-bar">
+                    <input type="text" id="search-cards" placeholder="Buscar cartas...">
+                    <button id="search-btn">🔍</button>
+                </div>
+                <div class="filters">
+                    <select id="rarity-filter">
+                        <option value="all">Todas las rarezas</option>
+                        <option value="normal">Normal</option>
+                        <option value="premium">Premium</option>
+                        <option value="legendary">Legendaria</option>
+                    </select>
+                </div>
+            </div>
+            <div class="database-stats">
+                <div class="stat">
+                    <span class="stat-label">Cartas Normales:</span>
+                    <span class="stat-value" id="normal-count">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Cartas Premium:</span>
+                    <span class="stat-value" id="premium-count">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Cartas Legendarias:</span>
+                    <span class="stat-value" id="legendary-count">0</span>
+                </div>
+            </div>
+            <div class="database-cards" id="database-container">
+                <!-- Todas las cartas de la base de datos se mostrarán aquí -->
+            </div>
+        </div>
+        
+        <!-- Animación de apertura -->
+        <div class="opening-animation" id="opening-animation">
+            <div class="card-reveal" id="card-reveal"></div>
+        </div>
+        
+        <!-- Modal de confirmación de venta -->
+        <div class="modal" id="sell-modal">
+            <div class="modal-content">
+                <h3>Vender Carta</h3>
+                <p id="sell-message">¿Estás seguro de que quieres vender esta carta?</p>
+                <div class="modal-card-preview" id="modal-card-preview"></div>
+                <div class="modal-actions">
+                    <button class="modal-btn confirm" id="confirm-sell">Vender por <span id="sell-price">0</span> monedas</button>
+                    <button class="modal-btn cancel" id="cancel-sell">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
