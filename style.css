@@ -220,21 +220,36 @@ h3 {
     color: #ffeb3b;
 }
 
+.inventory-controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
 .sell-all-btn {
     background: linear-gradient(135deg, #e74c3c, #c0392b);
     border: none;
     color: white;
-    padding: 10px 20px;
+    padding: 10px 15px;
     border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
     transition: all 0.3s ease;
+    font-size: 0.9rem;
 }
 
 .sell-all-btn:hover {
     background: linear-gradient(135deg, #c0392b, #a93226);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+}
+
+#type-filter, #type-filter-db {
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.9);
+    min-width: 150px;
 }
 
 .inventory {
@@ -253,6 +268,7 @@ h3 {
     border: 2px solid transparent;
     backdrop-filter: blur(5px);
     cursor: pointer;
+    position: relative;
 }
 
 .card:hover {
@@ -260,6 +276,19 @@ h3 {
     background: rgba(255, 255, 255, 0.15);
     border-color: rgba(255, 255, 255, 0.2);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.card-duplicate-count {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(231, 76, 60, 0.9);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border: 2px solid white;
 }
 
 .card-img {
@@ -302,6 +331,7 @@ h3 {
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    margin-bottom: 5px;
 }
 
 .rarity-normal {
@@ -319,18 +349,21 @@ h3 {
     box-shadow: 0 2px 8px rgba(243, 156, 18, 0.3);
 }
 
+.card-type {
+    font-size: 0.85rem;
+    color: #ccc;
+    margin-bottom: 8px;
+    padding: 3px 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    display: inline-block;
+}
+
 .card-price {
     margin: 8px 0;
     font-size: 1rem;
     color: #ffeb3b;
     font-weight: bold;
-}
-
-.card-description {
-    margin-top: 10px;
-    font-size: 0.85rem;
-    color: #ccc;
-    line-height: 1.4;
 }
 
 .sell-btn {
@@ -392,12 +425,6 @@ h3 {
     box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
 }
 
-.form-group textarea {
-    height: 120px;
-    resize: vertical;
-    font-family: inherit;
-}
-
 .form-group small {
     display: block;
     margin-top: 8px;
@@ -440,26 +467,42 @@ h3 {
     font-size: 1.8rem;
 }
 
-.delete-card-btn {
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
+.delete-card-btn, .edit-card-btn {
     border: none;
     color: white;
-    padding: 8px 16px;
+    padding: 8px 12px;
     border-radius: 6px;
     cursor: pointer;
     font-size: 0.8rem;
-    margin-top: 12px;
+    margin-top: 8px;
     transition: all 0.3s ease;
-    width: 100%;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    width: 48%;
     font-weight: bold;
+}
+
+.edit-card-btn {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    margin-right: 4%;
+}
+
+.edit-card-btn:hover {
+    background: linear-gradient(135deg, #2980b9, #1f618d);
+    transform: translateY(-2px);
+}
+
+.delete-card-btn {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
 }
 
 .delete-card-btn:hover {
     background: linear-gradient(135deg, #c0392b, #a93226);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+}
+
+.card-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
 }
 
 .database-controls {
@@ -497,12 +540,17 @@ h3 {
     background: #2980b9;
 }
 
+.filters {
+    display: flex;
+    gap: 10px;
+}
+
 .filters select {
     padding: 12px;
     border: none;
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.9);
-    min-width: 180px;
+    min-width: 150px;
 }
 
 .import-export {
@@ -606,24 +654,6 @@ h3 {
     margin: 10px 0;
 }
 
-.delete-db-btn {
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
-    border: none;
-    color: white;
-    padding: 6px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.8rem;
-    margin-top: 8px;
-    transition: all 0.3s ease;
-    width: 100%;
-}
-
-.delete-db-btn:hover {
-    background: linear-gradient(135deg, #c0392b, #a93226);
-    transform: translateY(-2px);
-}
-
 .modal {
     display: none;
     position: fixed;
@@ -647,9 +677,11 @@ h3 {
     padding: 30px;
     border-radius: 15px;
     border: 2px solid rgba(255, 255, 255, 0.2);
-    max-width: 400px;
+    max-width: 500px;
     width: 90%;
     text-align: center;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .modal-content h3 {
@@ -925,6 +957,68 @@ h3 {
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.duplicate-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    border-left: 4px solid #3498db;
+}
+
+.duplicate-info {
+    flex: 1;
+    text-align: left;
+}
+
+.duplicate-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.duplicate-count {
+    color: #ffeb3b;
+    font-size: 0.9rem;
+}
+
+.duplicate-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.duplicate-quantity {
+    width: 60px;
+    padding: 5px;
+    border: none;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.9);
+    text-align: center;
+}
+
+.duplicate-total {
+    color: #ffeb3b;
+    font-weight: bold;
+    min-width: 80px;
+    text-align: right;
+}
+
+.duplicates-total {
+    margin-top: 15px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.duplicates-total span {
+    color: #ffeb3b;
+}
+
 @media (max-width: 768px) {
     .container {
         padding: 10px;
@@ -992,7 +1086,16 @@ h3 {
         text-align: center;
     }
     
+    .inventory-controls {
+        flex-direction: column;
+        width: 100%;
+    }
+    
     .database-controls {
+        flex-direction: column;
+    }
+    
+    .filters {
         flex-direction: column;
     }
     
@@ -1026,6 +1129,31 @@ h3 {
         max-width: 300px;
         max-height: 400px;
     }
+    
+    .card-actions {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .edit-card-btn, .delete-card-btn {
+        width: 100%;
+        margin-right: 0;
+    }
+    
+    .quick-sell-options {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .duplicate-item {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .duplicate-controls {
+        justify-content: center;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1055,11 +1183,6 @@ h3 {
     .card-reveal {
         width: 250px;
         height: 350px;
-    }
-    
-    .quick-sell-options {
-        flex-direction: column;
-        gap: 10px;
     }
 }
 
@@ -1194,4 +1317,71 @@ body::before {
 
 .notification.error {
     background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
+.card-variants {
+    font-size: 0.8rem;
+    color: #ffeb3b;
+    margin: 5px 0;
+    padding: 3px 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    border-left: 3px solid #9b59b6;
+}
+
+.variants-list {
+    max-height: 300px;
+    overflow-y: auto;
+    margin: 15px 0;
+}
+
+.variant-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    border-left: 4px solid #3498db;
+}
+
+.variant-info {
+    flex: 1;
+}
+
+.variant-count {
+    color: #ffeb3b;
+    font-size: 0.9rem;
+    margin-left: 10px;
+}
+
+.sell-variant-btn {
+    background: linear-gradient(135deg, #27ae60, #219653);
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.sell-variant-btn:hover {
+    background: linear-gradient(135deg, #219653, #1e8449);
+}
+
+.sell-all-variant-btn {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    width: 100%;
+}
+
+.sell-all-variant-btn:hover {
+    background: linear-gradient(135deg, #c0392b, #a93226);
 }
