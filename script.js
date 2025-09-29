@@ -1,4 +1,3 @@
-// Datos del juego
 let coins = 1000;
 let inventory = [];
 let customCards = {
@@ -8,28 +7,24 @@ let customCards = {
 };
 let cardsData = {};
 
-// Precios base por rareza
 const basePrices = {
     normal: 25,
     premium: 75,
     legendary: 150
 };
 
-// Precios de las lootboxes
 const prices = {
     normal: 0,
     premium: 500,
     legendary: 1500
 };
 
-// Probabilidades de cartas por tipo de lootbox (80% normal, 15% premium, 5% legendary)
 const probabilities = {
-    normal: { normal: 0.8, premium: 0.15, legendary: 0.05 },
-    premium: { normal: 0.8, premium: 0.15, legendary: 0.05 },
-    legendary: { normal: 0.8, premium: 0.15, legendary: 0.05 }
+    normal: { normal: 0.9, premium: 0.08, legendary: 0.02 },
+    premium: { normal: 0.6, premium: 0.3, legendary: 0.1 },
+    legendary: { normal: 0.3, premium: 0.4, legendary: 0.3 }
 };
 
-// Elementos DOM
 const coinsElement = document.getElementById('coins');
 const navButtons = document.querySelectorAll('.nav-btn');
 const sections = document.querySelectorAll('.section');
@@ -37,8 +32,8 @@ const openButtons = document.querySelectorAll('.open-btn');
 const cardsContainer = document.getElementById('cards-container');
 const openingAnimation = document.getElementById('opening-animation');
 const cardReveal = document.getElementById('card-reveal');
-
-// Elementos del creador de cartas
+const quickSellBtn = document.getElementById('quick-sell-btn');
+const quickKeepBtn = document.getElementById('quick-keep-btn');
 const cardNameInput = document.getElementById('card-name');
 const cardRaritySelect = document.getElementById('card-rarity');
 const cardPriceInput = document.getElementById('card-price');
@@ -46,8 +41,6 @@ const cardImageInput = document.getElementById('card-image');
 const cardDescriptionInput = document.getElementById('card-description');
 const createCardBtn = document.getElementById('create-card-btn');
 const customCardsContainer = document.getElementById('custom-cards-container');
-
-// Elementos de la base de datos
 const searchInput = document.getElementById('search-cards');
 const searchBtn = document.getElementById('search-btn');
 const rarityFilter = document.getElementById('rarity-filter');
@@ -55,23 +48,30 @@ const databaseContainer = document.getElementById('database-container');
 const normalCountElement = document.getElementById('normal-count');
 const premiumCountElement = document.getElementById('premium-count');
 const legendaryCountElement = document.getElementById('legendary-count');
-
-// Elementos del modal de venta
 const sellModal = document.getElementById('sell-modal');
 const sellMessage = document.getElementById('sell-message');
 const modalCardPreview = document.getElementById('modal-card-preview');
 const sellPriceElement = document.getElementById('sell-price');
 const confirmSellBtn = document.getElementById('confirm-sell');
 const cancelSellBtn = document.getElementById('cancel-sell');
-
-// Estadísticas del inventario
 const totalCardsElement = document.getElementById('total-cards');
 const totalValueElement = document.getElementById('total-value');
+const sellAllNormalBtn = document.getElementById('sell-all-normal');
+const exportBtn = document.getElementById('export-btn');
+const importBtn = document.getElementById('import-btn');
+const importFile = document.getElementById('import-file');
+const resetBtn = document.getElementById('reset-btn');
+const imageModal = document.getElementById('image-modal');
+const expandedImage = document.getElementById('expanded-image');
+const expandedCardName = document.getElementById('expanded-card-name');
+const expandedCardRarity = document.getElementById('expanded-card-rarity');
+const expandedCardPrice = document.getElementById('expanded-card-price');
+const expandedCardDescription = document.getElementById('expanded-card-description');
+const closeImageModal = document.getElementById('close-image-modal');
 
-// Variables temporales
 let currentSellCard = null;
+let currentOpenedCard = null;
 
-// Cargar datos guardados
 function loadSavedData() {
     const savedCoins = localStorage.getItem('lootboxCoins');
     const savedInventory = localStorage.getItem('lootboxInventory');
@@ -85,24 +85,19 @@ function loadSavedData() {
     updateInventoryStats();
 }
 
-// Guardar datos
 function saveData() {
     localStorage.setItem('lootboxCoins', coins.toString());
     localStorage.setItem('lootboxInventory', JSON.stringify(inventory));
     localStorage.setItem('lootboxCustomCards', JSON.stringify(customCards));
 }
 
-// Cargar cartas desde el archivo JSON
 async function loadCards() {
     try {
         const response = await fetch('cartas.json');
         cardsData = await response.json();
-        // Añadir precios base a las cartas predeterminadas
         addBasePricesToCards();
-        console.log('Cartas cargadas:', cardsData);
     } catch (error) {
         console.error('Error cargando las cartas:', error);
-        // Datos de ejemplo en caso de error
         cardsData = {
             normal: [
                 { name: "Guerrero Básico", image: "images/guerrero-basico.jpg", price: 25 },
@@ -120,7 +115,6 @@ async function loadCards() {
     }
 }
 
-// Añadir precios base a las cartas predeterminadas
 function addBasePricesToCards() {
     Object.keys(cardsData).forEach(rarity => {
         cardsData[rarity].forEach(card => {
@@ -131,7 +125,6 @@ function addBasePricesToCards() {
     });
 }
 
-// Combinar cartas predeterminadas con cartas personalizadas
 function getAllCards() {
     const allCards = {
         normal: [...(cardsData.normal || []), ...customCards.normal],
@@ -141,7 +134,6 @@ function getAllCards() {
     return allCards;
 }
 
-// Obtener todas las cartas para la base de datos
 function getAllCardsForDatabase() {
     const allCards = getAllCards();
     const databaseCards = [];
@@ -159,16 +151,13 @@ function getAllCardsForDatabase() {
     return databaseCards;
 }
 
-// Navegación entre secciones
 navButtons.forEach(button => {
     button.addEventListener('click', () => {
         const targetSection = button.getAttribute('data-section');
         
-        // Actualizar botones activos
         navButtons.forEach(btn => btn.classList.remove('active'));
         button.classList.add('active');
         
-        // Mostrar sección correspondiente
         sections.forEach(section => {
             section.classList.remove('active');
             if (section.id === targetSection) {
@@ -176,7 +165,6 @@ navButtons.forEach(button => {
             }
         });
         
-        // Actualizar secciones específicas
         if (targetSection === 'inventory') {
             updateInventory();
         } else if (targetSection === 'creator') {
@@ -187,7 +175,6 @@ navButtons.forEach(button => {
     });
 });
 
-// Abrir lootboxes
 openButtons.forEach(button => {
     button.addEventListener('click', () => {
         const lootboxType = button.getAttribute('data-type');
@@ -195,43 +182,34 @@ openButtons.forEach(button => {
     });
 });
 
-// Función para abrir una lootbox
 function openLootbox(type) {
-    // Verificar si hay suficientes monedas
     if (coins < prices[type]) {
         showNotification('No tienes suficientes monedas para abrir esta lootbox', 'error');
         return;
     }
     
-    // Restar monedas
     coins -= prices[type];
     coinsElement.textContent = coins;
     
-    // Obtener una carta aleatoria según las probabilidades
     const rarity = getRandomRarity(type);
     const card = getRandomCard(rarity);
     
-    // Añadir carta al inventario
-    inventory.push({
+    currentOpenedCard = {
         ...card,
         rarity: rarity,
         id: generateCardId()
-    });
+    };
     
-    // Guardar datos
     saveData();
     updateInventoryStats();
     
-    // Mostrar animación de apertura
-    showOpeningAnimation(card, rarity);
+    showOpeningAnimation(currentOpenedCard, rarity);
 }
 
-// Generar ID único para carta
 function generateCardId() {
     return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }
 
-// Obtener rareza aleatoria según probabilidades (80% normal, 15% premium, 5% legendary)
 function getRandomRarity(lootboxType) {
     const prob = probabilities[lootboxType];
     const rand = Math.random();
@@ -241,13 +219,11 @@ function getRandomRarity(lootboxType) {
     return 'legendary';
 }
 
-// Obtener carta aleatoria de una rareza
 function getRandomCard(rarity) {
     const allCards = getAllCards();
     const cardList = allCards[rarity];
     
     if (!cardList || cardList.length === 0) {
-        // Carta por defecto en caso de error
         return { 
             name: "Carta Misteriosa", 
             image: "https://via.placeholder.com/300x400/333/fff?text=Carta+Misteriosa",
@@ -263,41 +239,56 @@ function getRandomCard(rarity) {
     };
 }
 
-// Mostrar animación de apertura
 function showOpeningAnimation(card, rarity) {
-    // Configurar la carta revelada
     cardReveal.className = 'card-reveal';
     cardReveal.classList.add(rarity);
     
-    // Crear elemento de imagen
     const img = document.createElement('img');
     img.src = card.image;
     img.alt = card.name;
     img.className = 'revealed-card-image';
+    img.onerror = function() {
+        this.src = 'https://via.placeholder.com/300x400/333/fff?text=Imagen+no+disponible';
+    };
     
-    // Limpiar contenido anterior y añadir la imagen
     cardReveal.innerHTML = '';
     cardReveal.appendChild(img);
     
-    // Mostrar animación
     openingAnimation.classList.add('active');
     
-    // Después de un tiempo, mostrar la carta
     setTimeout(() => {
         cardReveal.classList.add('active');
     }, 300);
-    
-    // Ocultar animación después de 3 segundos
-    setTimeout(() => {
-        openingAnimation.classList.remove('active');
-        cardReveal.classList.remove('active');
-        
-        // Mostrar notificación
-        showNotification(`¡Has obtenido: ${card.name} (${rarity})!`);
-    }, 3000);
 }
 
-// Actualizar estadísticas del inventario
+quickSellBtn.addEventListener('click', () => {
+    if (currentOpenedCard) {
+        const cardPrice = currentOpenedCard.price || basePrices[currentOpenedCard.rarity];
+        coins += cardPrice;
+        coinsElement.textContent = coins;
+        saveData();
+        updateInventoryStats();
+        showNotification(`¡Has vendido ${currentOpenedCard.name} por ${cardPrice} monedas!`);
+        closeOpeningAnimation();
+    }
+});
+
+quickKeepBtn.addEventListener('click', () => {
+    if (currentOpenedCard) {
+        inventory.push(currentOpenedCard);
+        saveData();
+        updateInventory();
+        showNotification(`¡Has guardado ${currentOpenedCard.name} en tu inventario!`);
+        closeOpeningAnimation();
+    }
+});
+
+function closeOpeningAnimation() {
+    openingAnimation.classList.remove('active');
+    cardReveal.classList.remove('active');
+    currentOpenedCard = null;
+}
+
 function updateInventoryStats() {
     const totalCards = inventory.length;
     const totalValue = inventory.reduce((sum, card) => sum + (card.price || basePrices[card.rarity]), 0);
@@ -306,7 +297,6 @@ function updateInventoryStats() {
     totalValueElement.textContent = totalValue;
 }
 
-// Actualizar inventario
 function updateInventory() {
     cardsContainer.innerHTML = '';
     
@@ -323,7 +313,7 @@ function updateInventory() {
         
         cardElement.innerHTML = `
             <div class="card-img ${card.rarity}">
-                <img src="${card.image}" alt="${card.name}" class="card-image">
+                <img src="${card.image}" alt="${card.name}" class="card-image" onerror="handleImageError(this)">
             </div>
             <div class="card-name">${card.name}</div>
             <div class="card-rarity rarity-${card.rarity}">${card.rarity}</div>
@@ -335,18 +325,46 @@ function updateInventory() {
         cardsContainer.appendChild(cardElement);
     });
     
-    // Añadir event listeners a los botones de vender
     document.querySelectorAll('.sell-btn').forEach(button => {
         button.addEventListener('click', (e) => {
+            e.stopPropagation();
             const index = parseInt(e.target.getAttribute('data-index'));
             showSellModal(index);
+        });
+    });
+    
+    document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('sell-btn')) {
+                const index = parseInt(card.querySelector('.sell-btn').getAttribute('data-index'));
+                showExpandedImage(inventory[index]);
+            }
         });
     });
     
     updateInventoryStats();
 }
 
-// Mostrar modal de venta
+function showExpandedImage(card) {
+    expandedImage.src = card.image;
+    expandedCardName.textContent = card.name;
+    expandedCardRarity.innerHTML = `<div class="card-rarity rarity-${card.rarity}">${card.rarity}</div>`;
+    expandedCardPrice.textContent = `Precio: ${card.price || basePrices[card.rarity]} monedas`;
+    expandedCardDescription.textContent = card.description || 'Sin descripción';
+    
+    imageModal.classList.add('active');
+}
+
+closeImageModal.addEventListener('click', () => {
+    imageModal.classList.remove('active');
+});
+
+imageModal.addEventListener('click', (e) => {
+    if (e.target === imageModal) {
+        imageModal.classList.remove('active');
+    }
+});
+
 function showSellModal(index) {
     currentSellCard = inventory[index];
     const cardPrice = currentSellCard.price || basePrices[currentSellCard.rarity];
@@ -355,34 +373,24 @@ function showSellModal(index) {
     sellPriceElement.textContent = cardPrice;
     
     modalCardPreview.innerHTML = `
-        <img src="${currentSellCard.image}" alt="${currentSellCard.name}">
+        <img src="${currentSellCard.image}" alt="${currentSellCard.name}" onerror="handleImageError(this)">
     `;
     
     sellModal.classList.add('active');
 }
 
-// Confirmar venta
 confirmSellBtn.addEventListener('click', () => {
     if (currentSellCard) {
         const cardPrice = currentSellCard.price || basePrices[currentSellCard.rarity];
         const cardIndex = inventory.findIndex(card => card.id === currentSellCard.id);
         
         if (cardIndex !== -1) {
-            // Añadir monedas
             coins += cardPrice;
             coinsElement.textContent = coins;
-            
-            // Eliminar carta del inventario
             inventory.splice(cardIndex, 1);
-            
-            // Guardar datos
             saveData();
-            
-            // Actualizar vistas
             updateInventory();
             updateInventoryStats();
-            
-            // Mostrar notificación
             showNotification(`¡Has vendido ${currentSellCard.name} por ${cardPrice} monedas!`);
         }
         
@@ -391,13 +399,31 @@ confirmSellBtn.addEventListener('click', () => {
     }
 });
 
-// Cancelar venta
 cancelSellBtn.addEventListener('click', () => {
     sellModal.classList.remove('active');
     currentSellCard = null;
 });
 
-// Actualizar cartas personalizadas
+sellAllNormalBtn.addEventListener('click', () => {
+    const normalCards = inventory.filter(card => card.rarity === 'normal');
+    
+    if (normalCards.length === 0) {
+        showNotification('No tienes cartas normales para vender', 'error');
+        return;
+    }
+    
+    const totalValue = normalCards.reduce((sum, card) => sum + (card.price || basePrices.normal), 0);
+    
+    if (confirm(`¿Vender todas las ${normalCards.length} cartas normales por ${totalValue} monedas?`)) {
+        inventory = inventory.filter(card => card.rarity !== 'normal');
+        coins += totalValue;
+        coinsElement.textContent = coins;
+        saveData();
+        updateInventory();
+        showNotification(`¡Has vendido ${normalCards.length} cartas normales por ${totalValue} monedas!`);
+    }
+});
+
 function updateCustomCards() {
     customCardsContainer.innerHTML = '';
     
@@ -418,7 +444,7 @@ function updateCustomCards() {
         
         cardElement.innerHTML = `
             <div class="card-img ${card.rarity}">
-                <img src="${card.image}" alt="${card.name}" class="card-image">
+                <img src="${card.image}" alt="${card.name}" class="card-image" onerror="handleImageError(this)">
             </div>
             <div class="card-name">${card.name}</div>
             <div class="card-rarity rarity-${card.rarity}">${card.rarity}</div>
@@ -430,7 +456,6 @@ function updateCustomCards() {
         customCardsContainer.appendChild(cardElement);
     });
     
-    // Añadir event listeners a los botones de eliminar
     document.querySelectorAll('.delete-card-btn').forEach(button => {
         button.addEventListener('click', (e) => {
             const rarity = e.target.getAttribute('data-rarity');
@@ -440,14 +465,12 @@ function updateCustomCards() {
     });
 }
 
-// Obtener índice de carta en el array
 function getCardIndex(card, rarity) {
     return customCards[rarity].findIndex(c => 
         c.name === card.name && c.image === card.image
     );
 }
 
-// Eliminar carta personalizada
 function deleteCustomCard(rarity, index) {
     if (confirm('¿Estás seguro de que quieres eliminar esta carta de la base de datos?')) {
         customCards[rarity].splice(index, 1);
@@ -458,7 +481,6 @@ function deleteCustomCard(rarity, index) {
     }
 }
 
-// Crear nueva carta personalizada
 createCardBtn.addEventListener('click', () => {
     const name = cardNameInput.value.trim();
     const rarity = cardRaritySelect.value;
@@ -481,7 +503,6 @@ createCardBtn.addEventListener('click', () => {
         return;
     }
     
-    // Crear nueva carta
     const newCard = {
         name: name,
         image: image,
@@ -489,31 +510,25 @@ createCardBtn.addEventListener('click', () => {
         description: description || ''
     };
     
-    // Añadir a las cartas personalizadas
     customCards[rarity].push(newCard);
     
-    // Guardar datos
     saveData();
     
-    // Limpiar formulario
     cardNameInput.value = '';
     cardImageInput.value = '';
     cardDescriptionInput.value = '';
     cardPriceInput.value = basePrices[rarity];
     
-    // Actualizar vistas
     updateCustomCards();
     updateDatabase();
     
     showNotification('¡Carta creada exitosamente!');
 });
 
-// Actualizar base de datos
 function updateDatabase() {
     databaseContainer.innerHTML = '';
     const allCards = getAllCardsForDatabase();
     
-    // Actualizar estadísticas
     const counts = {
         normal: cardsData.normal ? cardsData.normal.length + customCards.normal.length : customCards.normal.length,
         premium: cardsData.premium ? cardsData.premium.length + customCards.premium.length : customCards.premium.length,
@@ -529,7 +544,6 @@ function updateDatabase() {
         return;
     }
     
-    // Aplicar filtros
     const searchTerm = searchInput.value.toLowerCase();
     const rarityFilterValue = rarityFilter.value;
     
@@ -547,7 +561,7 @@ function updateDatabase() {
         cardElement.innerHTML = `
             ${card.isCustom ? '<div class="price-badge">Personalizada</div>' : ''}
             <div class="card-img ${card.rarity}">
-                <img src="${card.image}" alt="${card.name}" class="card-image">
+                <img src="${card.image}" alt="${card.name}" class="card-image" onerror="handleImageError(this)">
             </div>
             <div class="card-name">${card.name}</div>
             <div class="card-rarity rarity-${card.rarity}">${card.rarity}</div>
@@ -559,7 +573,6 @@ function updateDatabase() {
         databaseContainer.appendChild(cardElement);
     });
     
-    // Añadir event listeners a los botones de eliminar
     document.querySelectorAll('.delete-db-btn').forEach(button => {
         button.addEventListener('click', (e) => {
             const rarity = e.target.getAttribute('data-rarity');
@@ -569,7 +582,6 @@ function updateDatabase() {
     });
 }
 
-// Eliminar carta de la base de datos
 function deleteCardFromDatabase(rarity, name) {
     if (confirm('¿Estás seguro de que quieres eliminar esta carta de la base de datos?')) {
         const index = customCards[rarity].findIndex(card => card.name === name);
@@ -583,63 +595,15 @@ function deleteCardFromDatabase(rarity, name) {
     }
 }
 
-// Buscar cartas
 searchBtn.addEventListener('click', updateDatabase);
 searchInput.addEventListener('input', updateDatabase);
 rarityFilter.addEventListener('change', updateDatabase);
 
-// Mostrar notificación
-function showNotification(message, type = 'success') {
-    const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    notification.textContent = message;
-    
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        notification.classList.add('show');
-    }, 100);
-    
-    setTimeout(() => {
-        notification.classList.remove('show');
-        setTimeout(() => {
-            document.body.removeChild(notification);
-        }, 300);
-    }, 3000);
-}
-
-// Inicializar el juego
-function initGame() {
-    loadSavedData();
-    loadCards().then(() => {
-        updateInventory();
-        updateCustomCards();
-        updateDatabase();
-    });
-    
-    // Configurar precios base en el formulario
-    cardRaritySelect.addEventListener('change', () => {
-        const rarity = cardRaritySelect.value;
-        cardPriceInput.value = basePrices[rarity];
-    });
-}
-
-// Iniciar el juego cuando se carga la página
-document.addEventListener('DOMContentLoaded', initGame);
-
-// Añadir después de las variables existentes
-const exportBtn = document.getElementById('export-btn');
-const importBtn = document.getElementById('import-btn');
-const importFile = document.getElementById('import-file');
-const resetBtn = document.getElementById('reset-btn');
-
-// Añadir después de los event listeners existentes
 exportBtn.addEventListener('click', exportDatabase);
 importBtn.addEventListener('click', () => importFile.click());
 importFile.addEventListener('change', handleFileImport);
 resetBtn.addEventListener('click', resetDatabase);
 
-// Función para exportar la base de datos
 function exportDatabase() {
     const exportData = {
         version: "1.0",
@@ -666,7 +630,6 @@ function exportDatabase() {
     showNotification('Base de datos exportada exitosamente');
 }
 
-// Función para manejar la importación de archivos
 function handleFileImport(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -678,18 +641,14 @@ function handleFileImport(event) {
             showImportPreview(importData);
         } catch (error) {
             showNotification('Error: Archivo JSON inválido', 'error');
-            console.error('Error parsing JSON:', error);
         }
     };
     reader.readAsText(file);
     
-    // Resetear el input de archivo
     event.target.value = '';
 }
 
-// Función para mostrar preview de importación
 function showImportPreview(importData) {
-    // Validar estructura básica
     if (!importData.data || !importData.data.customCards) {
         showNotification('Error: Formato de archivo inválido', 'error');
         return;
@@ -741,7 +700,6 @@ function showImportPreview(importData) {
     
     document.body.appendChild(modal);
     
-    // Event listeners para los botones del modal
     document.getElementById('confirm-import').addEventListener('click', () => {
         confirmImport(importData.data);
         document.body.removeChild(modal);
@@ -752,14 +710,13 @@ function showImportPreview(importData) {
     });
 }
 
-// Generar vista previa de cartas para importación
 function generateImportPreview(customCards) {
     let previewHTML = '';
     const allCards = [
         ...(customCards.normal || []).map(card => ({...card, rarity: 'normal'})),
         ...(customCards.premium || []).map(card => ({...card, rarity: 'premium'})),
         ...(customCards.legendary || []).map(card => ({...card, rarity: 'legendary'}))
-    ].slice(0, 10); // Mostrar solo las primeras 10 cartas
+    ].slice(0, 10);
     
     if (allCards.length === 0) {
         return '<p>No hay cartas para mostrar</p>';
@@ -785,9 +742,7 @@ function generateImportPreview(customCards) {
     return previewHTML;
 }
 
-// Confirmar importación
 function confirmImport(importData) {
-    // Backup de datos actuales por si hay error
     const backup = {
         customCards: JSON.parse(JSON.stringify(customCards)),
         inventory: JSON.parse(JSON.stringify(inventory)),
@@ -795,26 +750,20 @@ function confirmImport(importData) {
     };
     
     try {
-        // Importar cartas personalizadas
         if (importData.customCards) {
             customCards = importData.customCards;
         }
         
-        // Importar inventario (opcional)
         if (importData.inventory && confirm('¿Deseas importar el inventario también? Esto reemplazará tu inventario actual.')) {
             inventory = importData.inventory;
         }
         
-        // Importar monedas (opcional)
         if (importData.coins && confirm('¿Deseas importar las monedas? Esto reemplazará tu cantidad actual de monedas.')) {
             coins = importData.coins;
             coinsElement.textContent = coins;
         }
         
-        // Guardar datos
         saveData();
-        
-        // Actualizar todas las vistas
         updateInventory();
         updateCustomCards();
         updateDatabase();
@@ -822,18 +771,15 @@ function confirmImport(importData) {
         showNotification('Base de datos importada exitosamente');
         
     } catch (error) {
-        // Restaurar backup en caso de error
         customCards = backup.customCards;
         inventory = backup.inventory;
         coins = backup.coins;
         coinsElement.textContent = coins;
         
         showNotification('Error durante la importación. Se restauró la copia de seguridad.', 'error');
-        console.error('Import error:', error);
     }
 }
 
-// Función para resetear la base de datos
 function resetDatabase() {
     if (confirm('⚠️ ¿ESTÁS SEGURO? Esto eliminará TODAS tus cartas personalizadas y no se puede deshacer.')) {
         if (confirm('¿Realmente estás seguro? Se perderán todas las cartas que hayas creado.')) {
@@ -852,8 +798,42 @@ function resetDatabase() {
     }
 }
 
-// Añadir esta función auxiliar para manejar errores de imágenes
+function showNotification(message, type = 'success') {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 100);
+    
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 3000);
+}
+
 function handleImageError(img) {
     img.onerror = null;
     img.src = 'https://via.placeholder.com/300x400/333/fff?text=Imagen+no+disponible';
 }
+
+function initGame() {
+    loadSavedData();
+    loadCards().then(() => {
+        updateInventory();
+        updateCustomCards();
+        updateDatabase();
+    });
+    
+    cardRaritySelect.addEventListener('change', () => {
+        const rarity = cardRaritySelect.value;
+        cardPriceInput.value = basePrices[rarity];
+    });
+}
+
+document.addEventListener('DOMContentLoaded', initGame);
