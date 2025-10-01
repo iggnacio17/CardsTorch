@@ -17,7 +17,9 @@
         <div class="nav">
             <button class="nav-btn active" data-section="shop">Tienda</button>
             <button class="nav-btn" data-section="inventory">Inventario</button>
-            <button class="nav-btn" data-section="creator">Creador de Cartas</button>
+            <button class="nav-btn" data-section="collection">Colección</button>
+            <button class="nav-btn" data-section="favorites">Favoritos</button>
+            <button class="nav-btn" data-section="creator">Creador</button>
             <button class="nav-btn" data-section="database">Base de Datos</button>
         </div>
         
@@ -53,17 +55,61 @@
         <div id="inventory" class="section">
             <h2>Tu Inventario de Cartas</h2>
             <div class="inventory-header">
-                <div class="total-cards">Total de cartas: <span id="total-cards">0</span></div>
-                <div class="total-value">Valor total: <span id="total-value">0</span> monedas</div>
+                <div class="total-cards">Total: <span id="total-cards">0</span> cartas</div>
+                <div class="total-value">Valor: <span id="total-value">0</span> monedas</div>
                 <div class="inventory-controls">
-                    <button class="sell-all-btn" id="sell-all-normal">Vender Todas las Normales</button>
-                    <button class="sell-all-btn" id="sell-all-duplicates">Vender Cartas Repetidas</button>
-                    <select id="type-filter">
-                        <option value="all">Todos los tipos</option>
+                    <div class="search-bar">
+                        <input type="text" id="inventory-search" placeholder="Buscar en inventario...">
+                        <button class="search-btn">🔍</button>
+                    </div>
+                    <select id="inventory-rarity-filter">
+                        <option value="all">Todas las rarezas</option>
+                        <option value="normal">Normal</option>
+                        <option value="premium">Premium</option>
+                        <option value="legendary">Legendaria</option>
                     </select>
+                    <button class="action-btn" id="sell-all-normal">Vender Normales</button>
+                    <button class="action-btn" id="sell-all-duplicates">Vender Repetidas</button>
                 </div>
             </div>
-            <div class="inventory" id="cards-container">
+            <div class="inventory-grid" id="cards-container">
+            </div>
+        </div>
+        
+        <div id="collection" class="section">
+            <h2>Tu Colección Completa</h2>
+            <div class="collection-header">
+                <div class="search-bar">
+                    <input type="text" id="collection-search" placeholder="Buscar en colección...">
+                    <button class="search-btn">🔍</button>
+                </div>
+                <select id="collection-rarity-filter">
+                    <option value="all">Todas las rarezas</option>
+                    <option value="normal">Normal</option>
+                    <option value="premium">Premium</option>
+                    <option value="legendary">Legendaria</option>
+                </select>
+            </div>
+            <div class="collection-container" id="collection-container">
+            </div>
+        </div>
+        
+        <div id="favorites" class="section">
+            <h2>Tus Cartas Favoritas</h2>
+            <div class="favorites-header">
+                <div class="search-bar">
+                    <input type="text" id="favorites-search" placeholder="Buscar en favoritos...">
+                    <button class="search-btn">🔍</button>
+                </div>
+                <select id="favorites-rarity-filter">
+                    <option value="all">Todas las rarezas</option>
+                    <option value="normal">Normal</option>
+                    <option value="premium">Premium</option>
+                    <option value="legendary">Legendaria</option>
+                </select>
+            </div>
+            <div class="favorites-container" id="favorites-container">
+                <p class="empty-message">No tienes cartas favoritas todavía. ¡Haz clic en el corazón de una carta para añadirla a favoritos!</p>
             </div>
         </div>
         
@@ -105,7 +151,7 @@
                 
                 <div class="created-cards">
                     <h3>Tus Cartas Creadas</h3>
-                    <div id="custom-cards-container" class="inventory">
+                    <div id="custom-cards-container" class="inventory-grid">
                     </div>
                 </div>
             </div>
@@ -116,7 +162,7 @@
             <div class="database-controls">
                 <div class="search-bar">
                     <input type="text" id="search-cards" placeholder="Buscar cartas...">
-                    <button id="search-btn">🔍</button>
+                    <button class="search-btn">🔍</button>
                 </div>
                 <div class="filters">
                     <select id="rarity-filter">
@@ -130,23 +176,23 @@
                     </select>
                 </div>
                 <div class="import-export">
-                    <button class="export-btn" id="export-btn">📤 Exportar BD</button>
-                    <button class="import-btn" id="import-btn">📥 Importar BD</button>
+                    <button class="action-btn" id="export-btn">📤 Exportar BD</button>
+                    <button class="action-btn" id="import-btn">📥 Importar BD</button>
                     <input type="file" id="import-file" accept=".json" style="display: none;">
-                    <button class="reset-btn" id="reset-btn">🔄 Resetear BD</button>
+                    <button class="action-btn danger" id="reset-btn">🔄 Resetear BD</button>
                 </div>
             </div>
             <div class="database-stats">
                 <div class="stat">
-                    <span class="stat-label">Cartas Normales:</span>
+                    <span class="stat-label">Normales:</span>
                     <span class="stat-value" id="normal-count">0</span>
                 </div>
                 <div class="stat">
-                    <span class="stat-label">Cartas Premium:</span>
+                    <span class="stat-label">Premium:</span>
                     <span class="stat-value" id="premium-count">0</span>
                 </div>
                 <div class="stat">
-                    <span class="stat-label">Cartas Legendarias:</span>
+                    <span class="stat-label">Legendarias:</span>
                     <span class="stat-value" id="legendary-count">0</span>
                 </div>
             </div>
