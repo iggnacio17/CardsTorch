@@ -324,7 +324,7 @@ select {
 }
 
 .card.missing {
-    filter: brightness(0.05);
+    filter: brightness(0.3);
     opacity: 0.7;
     cursor: default;
 }
@@ -1390,4 +1390,94 @@ body::before {
 
 ::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(135deg, #2980b9, #8e44ad);
+}
+
+/* Asegurar que el modal tenga la estructura correcta */
+.image-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 3000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.image-modal.active {
+    display: flex;
+}
+
+.image-modal-content {
+    background: rgba(0, 0, 0, 0.9);
+    padding: 25px;
+    border-radius: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    max-width: 90%;
+    max-height: 90%;
+    display: flex;
+    gap: 25px;
+    align-items: center;
+    position: relative;
+    flex-direction: column;
+}
+
+/* Mejorar el botón de cerrar */
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+    background: rgba(231, 76, 60, 0.8);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    border: 2px solid white;
+    z-index: 3001;
+}
+
+.close-btn:hover {
+    background: rgba(231, 76, 60, 1);
+    transform: scale(1.1);
+}
+
+/* Asegurar que la imagen no sea clickeable para cerrar */
+#expanded-image {
+    max-width: 400px;
+    max-height: 500px;
+    border-radius: 12px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    cursor: default;
+    pointer-events: none;
+}
+
+/* Para móviles */
+@media (max-width: 768px) {
+    .image-modal-content {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+    
+    #expanded-image {
+        max-width: 300px;
+        max-height: 400px;
+    }
+    
+    .close-btn {
+        top: 10px;
+        right: 10px;
+        width: 35px;
+        height: 35px;
+        font-size: 1.5rem;
+    }
 }
