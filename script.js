@@ -1318,6 +1318,8 @@ function resetDatabase() {
 }
 
 // Utilidades
+// Reemplazar completamente las funciones del modal de imagen:
+
 function showExpandedImage(card) {
     expandedImage.src = card.image;
     expandedCardName.textContent = card.name;
@@ -1325,8 +1327,43 @@ function showExpandedImage(card) {
     expandedCardType.textContent = `Tipo: ${card.type || 'Sin tipo'}`;
     expandedCardPrice.textContent = `Precio: ${card.price || basePrices[card.rarity]} monedas`;
     
+    // Limpiar event listeners anteriores
+    closeImageModal.removeEventListener('click', closeImageModalHandler);
+    imageModal.removeEventListener('click', outsideClickHandler);
+    
+    // Añadir nuevos event listeners
+    closeImageModal.addEventListener('click', closeImageModalHandler);
+    imageModal.addEventListener('click', outsideClickHandler);
+    
+    // Prevenir que la imagen cierre el modal
+    expandedImage.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+    
     imageModal.classList.add('active');
+    document.body.style.overflow = 'hidden'; // Prevenir scroll
 }
+
+function closeImageModalHandler() {
+    imageModal.classList.remove('active');
+    document.body.style.overflow = ''; // Restaurar scroll
+    // Remover event listeners
+    closeImageModal.removeEventListener('click', closeImageModalHandler);
+    imageModal.removeEventListener('click', outsideClickHandler);
+}
+
+function outsideClickHandler(e) {
+    if (e.target === imageModal) {
+        closeImageModalHandler();
+    }
+}
+
+// También añadir cierre con tecla ESC
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && imageModal.classList.contains('active')) {
+        closeImageModalHandler();
+    }
+});
 
 function showNotification(message, type = 'success') {
     const notification = document.createElement('div');
