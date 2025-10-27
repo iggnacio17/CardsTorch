@@ -9,21 +9,21 @@ let cardsData = {};
 let allTypes = new Set();
 
 const basePrices = {
-    normal: 25,
-    premium: 75,
-    legendary: 150
+    normal: 100,
+    premium: 750,
+    legendary: 1500
 };
 
 const prices = {
     normal: 0,
     premium: 500,
-    legendary: 1500
+    legendary: 1250
 };
 
 const probabilities = {
-    normal: { normal: 0.9, premium: 0.08, legendary: 0.02 },
-    premium: { normal: 0.6, premium: 0.3, legendary: 0.1 },
-    legendary: { normal: 0.3, premium: 0.4, legendary: 0.3 }
+    normal: { normal: 0.9, premium: 0.09, legendary: 0.01 },
+    premium: { normal: 0.5, premium: 0.4, legendary: 0.1 },
+    legendary: { normal: 0.0, premium: 0.6, legendary: 0.4 }
 };
 
 const coinsElement = document.getElementById('coins');
@@ -1511,3 +1511,4 @@ function initGame() {
 }
 
 document.addEventListener('DOMContentLoaded', initGame);
+
